@@ -79,6 +79,8 @@ class bst
 		int remove(l_node* head);
 		int file_extract(char chosenfile[]);
 		int addbst();
+		int display();
+		int display(b_tree* bhead);
 		
 	protected:
 		l_node* head;

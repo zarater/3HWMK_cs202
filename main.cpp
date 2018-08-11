@@ -32,6 +32,7 @@ int main()
 
 	bst quiz(chosenfile);
 	quiz.gethead()->getdata()->numTitle();
+	quiz.display();
 	cout << "do you want to continue? press 0 to stop" << endl;
 	cin >> num; 
 	if(num == 0)

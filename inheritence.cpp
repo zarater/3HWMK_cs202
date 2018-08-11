@@ -39,7 +39,7 @@ b_tree*& b_tree :: leftnext(b_tree* newnext)
 /******************************/
 bst :: bst(): head(NULL), bhead(NULL) 
 {}
-bst :: bst(char file_name[]): bhead(NULL)
+bst :: bst(char file_name[]): bhead(new b_tree)
 {
 	head = new l_node;
 
@@ -163,7 +163,16 @@ int b_tree :: initdata(int topic_name)
 	data = topic_name;
 	return data;
 }
-	
+int bst :: display()
+{
+	return display(bhead);
+}
+int bst :: display(b_tree* bhead)
+{
+	if(!bhead) {cout << "nothing" << endl; return 0;}
+	cout << bhead->getdata() << endl;
+	return display(bhead->goright()) + display(bhead->goleft());
+}
 
 /******************************/
 
@@ -221,21 +230,21 @@ int quizManager :: addtitle(char toadd_titles[])
 int quizManager :: display()
 {
 	if(!title) {cout << "nothing" << endl; return 0;}
-	cout << "here" << endl;
 	cout << title << endl;
 	cout << question << endl;
 	return 1;
 }
 int quizManager :: numTitle()
 {
-	char array[] = "ba";
+	char array[strlen(title)+1];
+	strcpy(array, title);
+
 	int size = strlen(array);
 	int total = 0;
 	for(int i = 0; i < size; ++i)
 	{
 		total += array[i];
 	}
-	cout << total << "is total " << endl;
 	return total;
 }
 
