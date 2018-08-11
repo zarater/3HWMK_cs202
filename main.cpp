@@ -14,7 +14,7 @@ int main()
 	char chosenfile[100];
 	int num = 0;
 	int user = 0;
-	cout << "load questions.txt? press 1 for yes, else type file name" << endl;
+		cout << "load questions.txt? press 1 for yes, else type file name" << endl;
 	cin >> user; 
 	if(user == 1)  
 	{
@@ -31,6 +31,7 @@ int main()
 
 
 	bst quiz(chosenfile);
+	quiz.gethead()->getdata()->numTitle();
 	cout << "do you want to continue? press 0 to stop" << endl;
 	cin >> num; 
 	if(num == 0)

@@ -7,9 +7,39 @@
 using namespace std;
 
 /******************************/
-bst :: bst(): head(NULL), right(NULL), left(NULL)
+b_tree :: b_tree():right(NULL), left(NULL), data(0)
 {}
-bst :: bst(char file_name[])
+b_tree :: ~b_tree()
+{}
+
+b_tree*& b_tree :: goleft()
+{
+	return left;
+}
+
+b_tree*& b_tree :: goright()
+{
+	return right;
+}
+
+
+b_tree*& b_tree :: rightnext(b_tree* newnext)
+{
+	right = newnext;
+	return right;
+}
+
+
+b_tree*& b_tree :: leftnext(b_tree* newnext)
+{
+	left = newnext;
+	return left;
+}
+
+/******************************/
+bst :: bst(): head(NULL), bhead(NULL) 
+{}
+bst :: bst(char file_name[]): bhead(NULL)
 {
 	head = new l_node;
 
@@ -21,6 +51,22 @@ bst :: ~bst()
 	if(head) remove(head);
 }
 
+
+
+l_node*& bst :: gethead()
+{
+	return head;
+}
+int bst :: remove(l_node* head)
+{
+
+	if(!head) return 0;
+	delete head;
+	head->gonext();
+	remove(head->gonext());
+	head = NULL;
+	return 0;
+}
 int bst :: file_extract(char chosenfile[])
 {	
 	int i = 0;
@@ -61,8 +107,8 @@ int bst :: file_extract(char chosenfile[])
 		}
 
 		file_in.ignore(100, '\n');
-		cout << "a_topic: " << a_topic << endl;
 		gethead()->getdata()->addtitle(a_topic);
+		addbst();
 		/****************************/
 		//	b-tree set up 2-3 tree
 
@@ -74,31 +120,51 @@ int bst :: file_extract(char chosenfile[])
 return 0;
 }
 
-bst*& bst :: goleft()
+int bst :: addbst()
 {
-	return left;
-}
+	int name = head->getdata()->numTitle();
+	if(name == 0) return 0;
+	if(!bhead)
+	{
+		bhead->initdata(name);
+		bhead->rightnext(NULL);
+		bhead->leftnext(NULL);
 
-bst*& bst :: goright()
+	}
+
+	else if(name > bhead->getdata())
+	{
+		//go right
+		b_tree* temp = new b_tree;
+		temp->initdata(name);
+		bhead->rightnext(NULL);
+		bhead->leftnext(NULL);
+		bhead->rightnext(temp);
+		bhead = temp;
+		
+	}
+	else if(name < bhead->getdata())
+	{
+		//go left
+		b_tree* temp = new b_tree;
+		temp->initdata(name);
+		bhead->rightnext(NULL);
+		bhead->leftnext(NULL);
+		bhead->leftnext(temp);
+	}
+	return 1;
+}
+int b_tree :: getdata()
 {
-	return right;
+	return data;
 }
-
-
-l_node*& bst :: gethead()
+int b_tree :: initdata(int topic_name)
 {
-	return head;
+	data = topic_name;
+	return data;
 }
-int bst :: remove(l_node* head)
-{
+	
 
-	if(!head) return 0;
-	delete head;
-	head->gonext();
-	remove(head->gonext());
-	head = NULL;
-	return 0;
-}
 /******************************/
 
 l_node::l_node(): data(NULL)
@@ -151,6 +217,26 @@ int quizManager :: addtitle(char toadd_titles[])
 	title = new char[strlen(toadd_titles)+1];
 	strcpy(title, toadd_titles);
 	return 1;
+}
+int quizManager :: display()
+{
+	if(!title) {cout << "nothing" << endl; return 0;}
+	cout << "here" << endl;
+	cout << title << endl;
+	cout << question << endl;
+	return 1;
+}
+int quizManager :: numTitle()
+{
+	char array[] = "ba";
+	int size = strlen(array);
+	int total = 0;
+	for(int i = 0; i < size; ++i)
+	{
+		total += array[i];
+	}
+	cout << total << "is total " << endl;
+	return total;
 }
 
 /******************************/
