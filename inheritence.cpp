@@ -39,9 +39,8 @@ b_tree*& b_tree :: leftnext(b_tree* newnext)
 /******************************/
 bst :: bst(): head(NULL), bhead(NULL) 
 {}
-bst :: bst(char file_name[]): bhead(new b_tree)
+bst :: bst(char file_name[])
 {
-	head = new l_node;
 
 	file_extract(file_name);
 }
@@ -93,6 +92,7 @@ int bst :: file_extract(char chosenfile[])
 		cout << "a_question: "  <<  a_question << endl;
 		if(gethead() == NULL)
 		{
+		head = new l_node;
 		gethead()->getdata()->addquestion(a_question);//head->data = data
 		gethead()->getnext(NULL);//head = head->next
 		}
@@ -126,6 +126,7 @@ int bst :: addbst()
 	if(name == 0) return 0;
 	if(!bhead)
 	{
+		bhead = new b_tree;
 		bhead->initdata(name);
 		bhead->rightnext(NULL);
 		bhead->leftnext(NULL);
@@ -143,7 +144,8 @@ int bst :: addbst()
 		bhead = temp;
 		
 	}
-	else if(name < bhead->getdata())
+
+	else if(name <= bhead->getdata())
 	{
 		//go left
 		b_tree* temp = new b_tree;
